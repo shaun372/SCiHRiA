@@ -1,0 +1,1398 @@
+/* =============================================
+   CLEARING THE AIR — 8-bit retro game styles
+   ============================================= */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --smoke:    #888888;
+  --smoke-dk: #555555;
+  --myth-red: #cc2200;
+  --fact-grn: #007722;
+  --yellow:   #ffe000;
+  --black:    #111111;
+  --white:    #f8f8f0;
+  --grey-lt:  #ddddcc;
+  --body-bg:  #3a7a3a;
+  --village-bg: #8b6914;
+  --city-bg:  #4a6080;
+  --nation-bg: #1a3a5c;
+  --card-shadow: 4px 4px 0 #111;
+  --font-body: 'Nunito', 'Segoe UI', system-ui, sans-serif;
+}
+
+/* Readable body font (bundled offline). Headings/UI use the pixel font. */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/fonts/Nunito-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('assets/fonts/Nunito-Bold.woff2') format('woff2');
+}
+
+html, body {
+  height: 100%;
+  background: #222;
+  font-family: var(--font-body);
+  color: var(--black);
+  image-rendering: pixelated;
+}
+
+/* Phone-frame wrapper */
+#app {
+  max-width: 430px;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: #111;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---- Screens ---- */
+.screen {
+  display: none;
+  width: 100%;
+  min-height: 100vh;
+  flex-direction: column;
+}
+.screen.active { display: flex; }
+
+/* =====================
+   TITLE SCREEN
+   ===================== */
+#screen-title {
+  background: #111;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  gap: 4px;
+}
+
+.title-main {
+  font-size: 36px;
+  font-weight: bold;
+  color: var(--white);
+  line-height: 1.1;
+  text-shadow: 4px 4px 0 var(--smoke-dk);
+  margin-bottom: 6px;
+  animation: title-pulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes title-pulse {
+  0%   { text-shadow: 4px 4px 0 var(--smoke-dk); }
+  100% { text-shadow: 4px 4px 0 var(--smoke-dk), 0 0 24px rgba(255,224,0,0.25); }
+}
+
+.title-sub {
+  font-size: 12px;
+  color: #aaa;
+  letter-spacing: 1px;
+  margin-bottom: 32px;
+}
+
+/* Retro RPG-style menu */
+.title-menu {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 280px;
+  margin-bottom: 28px;
+  border: 2px solid #333;
+  background: #0d0d0d;
+}
+
+.title-menu-item {
+  background: transparent;
+  color: var(--white);
+  border: none;
+  border-bottom: 1px solid #222;
+  padding: 14px 16px 14px 40px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  position: relative;
+  transition: background 0.05s, color 0.05s;
+}
+.title-menu-item:last-child { border-bottom: none; }
+
+.title-menu-item::before {
+  content: '';
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--yellow);
+  font-size: 14px;
+}
+
+.title-menu-item:hover,
+.title-menu-item:focus {
+  background: rgba(255,224,0,0.08);
+  color: var(--yellow);
+  outline: none;
+}
+
+.title-menu-item:hover::before,
+.title-menu-item:focus::before {
+  content: '▶';
+}
+
+.title-draft {
+  font-size: 10px;
+  color: #cc6600;
+  border: 1px solid #cc6600;
+  padding: 6px 10px;
+  max-width: 300px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* Shared primary/secondary buttons */
+.btn-primary {
+  background: var(--yellow);
+  color: var(--black);
+  border: 3px solid var(--black);
+  box-shadow: var(--card-shadow);
+  padding: 14px 32px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  width: 100%;
+}
+.btn-primary:active { transform: translate(2px,2px); box-shadow: 2px 2px 0 #111; }
+
+.btn-secondary {
+  background: #333;
+  color: var(--white);
+  border: 3px solid #555;
+  box-shadow: var(--card-shadow);
+  padding: 12px 28px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  width: 100%;
+}
+.btn-secondary:active { transform: translate(2px,2px); box-shadow: 2px 2px 0 #000; }
+
+.btn-back {
+  background: transparent;
+  color: #888;
+  border: 1px solid #444;
+  padding: 8px 16px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.btn-back:hover { color: var(--white); border-color: #888; }
+
+/* =====================
+   MAP SCREEN
+   ===================== */
+#screen-map {
+  background: #1a1a2e;
+  padding: 0;
+}
+
+.map-header {
+  background: #111;
+  padding: 12px 16px;
+  border-bottom: 3px solid var(--yellow);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.map-title {
+  font-size: 14px;
+  color: var(--yellow);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.map-subtitle {
+  font-size: 10px;
+  color: #888;
+  letter-spacing: 1px;
+}
+
+.map-grid {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+}
+
+.sublevel-card {
+  flex: 1;
+  min-height: 120px;
+  position: relative;
+  border-bottom: 3px solid #111;
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+.sublevel-card.locked {
+  cursor: default;
+  filter: brightness(0.35);
+}
+
+.sublevel-card[data-sublevel="body"]   { background: var(--body-bg); }
+.sublevel-card[data-sublevel="village"]{ background: var(--village-bg); }
+.sublevel-card[data-sublevel="city"]   { background: var(--city-bg); }
+.sublevel-card[data-sublevel="nation"] { background: var(--nation-bg); }
+
+.sublevel-bg-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  opacity: 0.55;
+  image-rendering: pixelated;
+}
+
+.sublevel-info {
+  position: relative;
+  z-index: 2;
+  padding: 10px 14px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.82));
+  width: 100%;
+}
+
+.sublevel-num {
+  font-size: 10px;
+  color: var(--yellow);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.sublevel-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--white);
+  text-shadow: 2px 2px 0 #000;
+}
+
+.sublevel-scene {
+  font-size: 10px;
+  color: #bbb;
+  margin-top: 2px;
+}
+
+.sublevel-stars {
+  font-size: 16px;
+  color: var(--yellow);
+  letter-spacing: 4px;
+  margin-top: 4px;
+}
+
+.sublevel-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.grid-progress {
+  height: 6px;
+  background: #333;
+  flex: 1;
+  border: 1px solid #555;
+}
+
+.grid-progress-fill {
+  height: 100%;
+  background: var(--yellow);
+}
+
+.sublevel-pct {
+  font-size: 10px;
+  color: #aaa;
+  min-width: 36px;
+  text-align: right;
+}
+
+.lock-icon {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+  font-size: 28px;
+  z-index: 3;
+  filter: brightness(2);
+}
+
+/* =====================
+   GAME SCREEN
+   ===================== */
+#screen-game {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.game-header {
+  position: relative;
+  z-index: 3;
+  background: rgba(0, 0, 0, 0.78);
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid rgba(255,224,0,0.4);
+}
+
+.game-sublevel-name {
+  font-size: 12px;
+  color: var(--yellow);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.game-header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.game-score {
+  font-size: 12px;
+  color: var(--white);
+  letter-spacing: 1px;
+}
+
+.game-qcount {
+  font-size: 12px;
+  color: #bbb;
+}
+
+.game-streak {
+  font-size: 12px;
+  color: #ff8800;
+  font-weight: bold;
+  letter-spacing: 1px;
+  min-width: 0;
+  opacity: 0;
+}
+.game-streak.show { opacity: 1; }
+.game-streak.bump { animation: streak-bump 0.3s ease-out; }
+
+@keyframes streak-bump {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.5); color: var(--yellow); }
+  100% { transform: scale(1); }
+}
+
+.btn-mute {
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 2px;
+  line-height: 1;
+}
+
+/* Round progress bar under header */
+.game-progress {
+  position: relative;
+  z-index: 3;
+  height: 5px;
+  background: #000;
+  flex-shrink: 0;
+}
+.game-progress-fill {
+  height: 100%;
+  width: 0;
+  background: var(--yellow);
+  transition: width 0.2s ease;
+}
+
+/* Full-screen background image — sits behind everything */
+.scene-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  image-rendering: pixelated;
+  z-index: 0;
+}
+
+/* Scene container — holds bg image + grid overlay */
+.scene-container {
+  flex: 1;
+  min-height: 0; /* allow the scene to shrink on short screens instead of pushing the card off */
+  position: relative;
+  overflow: hidden;
+}
+
+/* Fallback colours shown before bg image loads */
+.scene-container[data-sublevel="body"]   { background: var(--body-bg); }
+.scene-container[data-sublevel="village"]{ background: var(--village-bg); }
+.scene-container[data-sublevel="city"]   { background: var(--city-bg); }
+.scene-container[data-sublevel="nation"] { background: var(--nation-bg); }
+
+/* 5×4 grey-block grid overlay */
+.grid-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 2px;
+  padding: 2px;
+  z-index: 1;
+}
+
+.grid-cell {
+  background: var(--smoke);
+  border: 1px solid var(--smoke-dk);
+  transition: none; /* hard, pixel-crisp removal per spec */
+}
+
+.grid-cell.cleared {
+  display: none;
+}
+
+/* #1: smoke-image blocks — seamless (no gaps) so the sliced "before" image
+   reads as one picture that erodes block-by-block to reveal the clean image. */
+.grid-overlay.smoke-grid {
+  gap: 0;
+  padding: 0;
+}
+.grid-cell.smoke-cell {
+  background-color: transparent;
+  border: none;
+  image-rendering: pixelated;
+}
+/* Cleared smoke blocks stay in their grid track (so remaining slices don't
+   reflow) but turn invisible, revealing the clean image underneath. */
+.grid-cell.smoke-cell.cleared {
+  display: block;
+  visibility: hidden;
+}
+/* Freshly cleared block plays a quick flash-and-dissipate "puff" (#2),
+   then ends transparent so the clean image shows through. */
+.grid-cell.smoke-cell.clearing {
+  display: block;
+  z-index: 2;
+  animation: block-clear 0.32s ease-out forwards;
+}
+@keyframes block-clear {
+  0%   { opacity: 1; filter: brightness(1); }
+  30%  { opacity: 1; filter: brightness(2.6); }
+  100% { opacity: 0; filter: brightness(2.6); }
+}
+
+/* Swipe card area */
+.card-area {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  background: rgba(10, 10, 10, 0.88);
+}
+
+.swipe-card {
+  width: 100%;
+  max-width: 380px;
+  background: var(--white);
+  border: 3px solid var(--black);
+  box-shadow: var(--card-shadow);
+  padding: 20px;
+  position: relative;
+  user-select: none;
+  touch-action: none;
+  cursor: grab;
+  overflow: hidden;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.swipe-card.dragging { transition: none; cursor: grabbing; }
+.swipe-card.enter { animation: card-enter 0.2s ease-out; }
+
+@keyframes card-enter {
+  0%   { transform: translateY(12px) scale(0.96); opacity: 0; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* MYTH / FACT stamps that appear while swiping */
+.swipe-stamp {
+  position: absolute;
+  top: 14px;
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  border: 3px solid;
+  text-transform: uppercase;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+.stamp-myth { left: 14px;  color: var(--myth-red); border-color: var(--myth-red); transform: rotate(-12deg); }
+.stamp-fact { right: 14px; color: var(--fact-grn); border-color: var(--fact-grn); transform: rotate(12deg); }
+
+.swipe-card-inner {
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.statement-text {
+  font-size: 15px;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--black);
+  font-weight: bold;
+}
+
+.swipe-buttons {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 14px;
+  gap: 12px;
+}
+
+.btn-myth, .btn-fact {
+  flex: 1;
+  color: var(--white);
+  border: 3px solid var(--black);
+  box-shadow: var(--card-shadow);
+  padding: 14px 8px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.btn-myth { background: var(--myth-red); }
+.btn-fact { background: var(--fact-grn); }
+
+.btn-myth:active, .btn-fact:active { transform: translate(2px,2px); box-shadow: 2px 2px 0 #111; }
+
+.game-footer {
+  position: relative;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.82);
+  padding: 6px;
+  text-align: center;
+  font-size: 10px;
+  color: #888;
+  letter-spacing: 1px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+/* =====================
+   CELEBRATION OVERLAY
+   ===================== */
+#level-clear-overlay {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.72);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+  pointer-events: none;
+}
+#level-clear-overlay.active { display: flex; }
+
+#lco-stars {
+  position: absolute;
+  inset: 0;
+}
+
+.lco-star {
+  position: absolute;
+  font-size: 30px;
+  line-height: 1;
+  margin: -15px 0 0 -15px;
+  animation: lco-fly 1.4s ease-out forwards;
+}
+
+.lco-text {
+  position: relative;
+  font-size: 26px;
+  font-weight: bold;
+  color: var(--yellow);
+  text-shadow: 3px 3px 0 #000, -1px -1px 0 #000;
+  letter-spacing: 2px;
+  text-align: center;
+  padding: 0 20px;
+  animation: lco-pop 0.4s ease-out;
+}
+
+@keyframes lco-pop {
+  0%   { transform: scale(0.2); opacity: 0; }
+  65%  { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+@keyframes lco-fly {
+  0%   { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(0.1); opacity: 0; }
+}
+
+/* =====================
+   RESULT SCREEN
+   ===================== */
+#screen-result {
+  background: #0d0d0d;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 24px;
+  gap: 14px;
+  overflow-y: auto; /* scroll safety on short screens */
+}
+
+.result-header {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--white);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  border-bottom: 3px solid #333;
+  padding-bottom: 14px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.result-header.cleared {
+  color: var(--yellow);
+  border-bottom-color: var(--yellow);
+}
+
+.result-sublevel {
+  font-size: 11px;
+  color: #777;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.result-stars {
+  font-size: 44px;
+  color: var(--yellow);
+  letter-spacing: 6px;
+  margin: 4px 0;
+}
+
+.result-score {
+  font-size: 56px;
+  font-weight: bold;
+  color: var(--white);
+  text-shadow: 4px 4px 0 #333;
+  line-height: 1;
+}
+
+.result-msg {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--yellow);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.result-sub-msg {
+  font-size: 12px;
+  color: #999;
+  line-height: 1.6;
+  max-width: 280px;
+}
+
+.result-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 300px;
+  margin-top: 8px;
+}
+
+/* =====================
+   FINAL / COMPLETION SCREEN (follows result-screen conventions)
+   ===================== */
+#screen-final {
+  background: #0d0d0d;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 36px 24px;
+  gap: 12px;
+  overflow-y: auto;
+}
+.final-header {
+  font-family: var(--font-pixel);
+  font-size: 16px;
+  color: var(--yellow);
+  letter-spacing: 2px;
+  line-height: 1.4;
+  border-bottom: 3px solid var(--yellow);
+  padding-bottom: 14px;
+  width: 100%;
+  max-width: 320px;
+}
+.final-sub {
+  font-size: 13px;
+  color: #ccc;
+  line-height: 1.6;
+  max-width: 300px;
+}
+.final-stars {
+  font-size: 24px;
+  color: var(--yellow);
+  letter-spacing: 3px;
+  line-height: 1.3;
+  margin-top: 4px;
+}
+.final-score {
+  font-family: var(--font-pixel);
+  font-size: 22px;
+  color: var(--white);
+  text-shadow: 3px 3px 0 #333;
+}
+.final-passed {
+  font-family: var(--font-pixel);
+  font-size: 11px;
+  color: var(--fact-grn);
+  letter-spacing: 1px;
+}
+.final-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: #ddd;
+  margin: 4px 0 8px;
+}
+.final-breakdown .fb-row { display: flex; justify-content: space-between; gap: 16px; min-width: 220px; }
+.final-breakdown .fb-stars { color: var(--yellow); letter-spacing: 2px; }
+#screen-final .btn-primary,
+#screen-final .btn-back { width: 100%; max-width: 300px; }
+#screen-final .btn-primary:disabled {
+  opacity: 0.45;
+  cursor: default;
+  box-shadow: var(--card-shadow);
+}
+#screen-final .btn-primary:disabled:active { transform: none; }
+.final-copyright {
+  font-size: 10px;
+  color: #777;
+  margin-top: 14px;
+  letter-spacing: 0.5px;
+}
+
+/* =====================
+   REVIEW SCREEN
+   ===================== */
+#screen-review {
+  background: #1a1a1a;
+}
+
+.review-header {
+  background: var(--black);
+  padding: 14px 16px;
+  border-bottom: 3px solid var(--yellow);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.review-title {
+  font-size: 14px;
+  color: var(--yellow);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: bold;
+}
+
+.review-score-badge {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--white);
+  background: #333;
+  border: 2px solid var(--yellow);
+  padding: 4px 10px;
+}
+
+/* #3: doctor strip at the top of the review */
+.review-doctor {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: #f4d400;
+  border-bottom: 3px solid var(--black);
+  flex-shrink: 0;
+}
+.review-doctor-avatar {
+  width: 54px;
+  height: 54px;
+  flex-shrink: 0;
+  border: 2px solid var(--black);
+  background-image: url('assets/doc_yellow.jpg');
+  background-repeat: no-repeat;
+  background-size: 240%;
+  background-position: 12% 82%;
+}
+.review-doctor-text {
+  font-size: 12px;
+  line-height: 1.45;
+  color: #161616;
+  font-weight: 700;
+}
+
+.review-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.review-card {
+  background: var(--yellow);
+  border: 3px solid var(--black);
+  box-shadow: var(--card-shadow);
+  padding: 12px;
+  flex-shrink: 0;
+}
+
+.review-card.was-wrong {
+  background: #ffe8e0;
+  border-color: var(--myth-red);
+}
+
+.review-card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.review-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.review-statement {
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1.4;
+  flex: 1;
+}
+
+.review-classification {
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+  padding: 2px 6px;
+  display: inline-block;
+  background: var(--black);
+  color: var(--yellow);
+}
+
+.review-card.was-wrong .review-classification {
+  background: var(--myth-red);
+  color: var(--white);
+}
+
+.review-explanation {
+  font-size: 11px;
+  line-height: 1.5;
+  color: #222;
+  margin-bottom: 6px;
+}
+
+.review-citation {
+  font-size: 10px;
+  color: #555;
+  font-style: italic;
+  border-top: 1px solid rgba(0,0,0,0.15);
+  padding-top: 4px;
+  line-height: 1.4;
+}
+
+.review-footer {
+  background: #111;
+  padding: 12px 16px;
+  border-top: 3px solid #333;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
+  flex-shrink: 0;
+}
+
+/* =====================
+   OVERLAY PANELS
+   (How to Play / About)
+   ===================== */
+.overlay-panel {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  background: #111;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 24px 32px;
+  overflow-y: auto;
+}
+
+.overlay-panel.active { display: flex; }
+
+.overlay-content {
+  max-width: 360px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.overlay-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--yellow);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  border-bottom: 3px solid var(--yellow);
+  padding-bottom: 12px;
+}
+
+.overlay-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  color: var(--white);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.overlay-body strong {
+  color: var(--yellow);
+}
+
+.myth-tag {
+  color: var(--myth-red);
+  font-weight: bold;
+}
+
+.fact-tag {
+  color: #22aa44;
+  font-weight: bold;
+}
+
+.about-draft {
+  font-size: 11px;
+  color: #cc6600;
+  border: 1px solid #cc6600;
+  padding: 6px 8px;
+  line-height: 1.4;
+}
+
+/* =====================
+   ACCESSIBILITY
+   ===================== */
+
+/* Visible keyboard focus ring on all interactive elements */
+button:focus-visible,
+.sublevel-card:focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 2px;
+}
+
+/* Respect users who prefer reduced motion: disable decorative
+   animation & transitions, but keep interactions functional */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* =====================
+   #7 PIXEL FONT (headings & UI only)
+   Press Start 2P is wide/tall, so converted elements get
+   reduced sizes + tightened spacing. Body text stays monospace.
+   Font is bundled locally so it works fully offline.
+   ===================== */
+@font-face {
+  font-family: 'Press Start 2P';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/fonts/PressStart2P.woff2') format('woff2');
+}
+:root { --font-pixel: 'Press Start 2P', 'Courier New', monospace; }
+
+.title-main,
+.title-sub,
+.title-menu-item,
+.map-title,
+.sublevel-num,
+.sublevel-name,
+.game-sublevel-name,
+.result-header,
+.result-msg,
+.result-score,
+.review-title,
+.review-classification,
+.overlay-title,
+.lco-text,
+.btn-primary,
+.btn-secondary,
+.btn-back,
+.btn-myth,
+.btn-fact {
+  font-family: var(--font-pixel);
+  font-weight: normal; /* Press Start 2P has no bold weight */
+}
+
+/* Size + spacing tuning for the pixel font */
+.title-main      { font-size: 24px; line-height: 1.35; letter-spacing: 0; text-shadow: 4px 4px 0 var(--smoke-dk); }
+.title-sub       { font-size: 8px;  letter-spacing: 1px; }
+.title-menu-item { font-size: 11px; letter-spacing: 1px; padding: 16px 16px 16px 40px; }
+.map-title       { font-size: 11px; letter-spacing: 1px; }
+.sublevel-num    { font-size: 7px;  letter-spacing: 1px; }
+.sublevel-name   { font-size: 13px; line-height: 1.3; }
+.game-sublevel-name { font-size: 9px; letter-spacing: 0; }
+.result-header   { font-size: 13px; line-height: 1.4; letter-spacing: 1px; }
+.result-msg      { font-size: 12px; line-height: 1.4; letter-spacing: 1px; }
+.result-score    { font-size: 34px; line-height: 1; text-shadow: 4px 4px 0 #333; }
+.review-title    { font-size: 10px; letter-spacing: 1px; }
+.review-classification { font-size: 8px; line-height: 1.4; letter-spacing: 0; }
+.overlay-title   { font-size: 13px; line-height: 1.4; letter-spacing: 1px; }
+.lco-text        { font-size: 15px; line-height: 1.4; letter-spacing: 1px; }
+.btn-primary     { font-size: 11px; letter-spacing: 1px; }
+.btn-secondary   { font-size: 10px; letter-spacing: 1px; }
+.btn-back        { font-size: 8px;  letter-spacing: 1px; }
+.btn-myth, .btn-fact { font-size: 10px; letter-spacing: 0; }
+
+/* =====================
+   #6 CONTENT DATA-LAYER TAGS (review cards)
+   ===================== */
+.review-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.review-category,
+.review-status {
+  font-size: 9px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 6px;
+  border: 1px solid;
+}
+.review-category {
+  color: #333;
+  border-color: #999;
+  background: rgba(0,0,0,0.04);
+}
+/* Diagnostic "terminal readout" status chips so the committee can scan
+   approved vs pending at a glance. Pending gently pulses (disabled under
+   prefers-reduced-motion via the global rule). */
+.review-status {
+  font-family: var(--font-pixel);
+  font-size: 7px;
+  letter-spacing: 0.5px;
+  padding: 4px 6px;
+}
+.review-status.approved {
+  color: #2bff2b;
+  border-color: #2bff2b;
+  background: #062c06;
+}
+.review-status.pending {
+  color: #ffb02e;
+  border-color: #ffb02e;
+  background: #2c1a00;
+  animation: pending-pulse 1.1s ease-in-out infinite;
+}
+@keyframes pending-pulse {
+  50% { color: #a8741f; border-color: #5a3a00; }
+}
+
+/* =====================
+   #2 DOCTOR INTRO SCREEN
+   ===================== */
+#screen-doctor {
+  background-color: #f4d400;
+  background-image: url('assets/doc_yellow.jpg');
+  background-size: cover;
+  background-position: center bottom; /* keep the doctor (bottom-left) visible */
+  background-repeat: no-repeat;
+  image-rendering: auto;
+  align-items: stretch;
+  justify-content: flex-start;
+  text-align: left;
+  padding: 10% 26px 24px;
+  gap: 20px;
+  overflow-y: auto; /* scroll safety on short screens */
+}
+
+/* Speech text in the open yellow area above the doctor illustration */
+.doctor-dialogue {
+  max-width: 340px;
+}
+
+.doctor-name {
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  color: #1f4e3d;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+}
+
+.doctor-line {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #161616;
+  font-weight: bold;
+}
+
+.doctor-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 300px;
+}
+
+/* =====================
+   OPTIONS SCREEN (#4 / #5 / #8)
+   ===================== */
+#screen-options {
+  background: #111;
+  align-items: center;
+  padding: 40px 20px 32px;
+  gap: 22px;
+  overflow-y: auto;
+}
+
+.options-header {
+  font-family: var(--font-pixel);
+  font-size: 14px;
+  color: var(--yellow);
+  border-bottom: 3px solid var(--yellow);
+  padding-bottom: 12px;
+  width: 100%;
+  max-width: 340px;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.options-body {
+  width: 100%;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.option-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.option-label {
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  color: #aaa;
+  letter-spacing: 1px;
+}
+
+.option-choices {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.option-btn {
+  flex: 1;
+  min-width: 64px;
+  background: #222;
+  color: #cccccc;
+  border: 2px solid #444;
+  padding: 11px 6px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.option-btn.active {
+  background: var(--yellow);
+  color: #111;
+  border-color: var(--yellow);
+}
+
+.option-note {
+  font-size: 11px;
+  color: #777;
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+/* =====================
+   #5 ARCADE MODE (lives + timer in header)
+   ===================== */
+.game-lives {
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: #ff4444;
+  display: none; /* shown by JS in arcade mode */
+}
+.game-timer {
+  font-size: 11px;
+  color: #ff6644;
+  font-weight: bold;
+  display: none; /* shown by JS in arcade mode */
+}
+.game-timer.warn {
+  color: #ff2222;
+  animation: timer-pulse 0.6s steps(2, end) infinite;
+}
+@keyframes timer-pulse { 50% { opacity: 0.35; } }
+
+/* =====================
+   #4 INSTANT FEEDBACK OVERLAY
+   ===================== */
+.feedback-overlay {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  background: rgba(0,0,0,0.82);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.feedback-overlay.active { display: flex; }
+
+.feedback-box {
+  width: 100%;
+  max-width: 360px;
+  background: var(--white);
+  border: 3px solid var(--black);
+  box-shadow: var(--card-shadow);
+  padding: 20px;
+  text-align: center;
+}
+
+.feedback-result {
+  font-family: var(--font-pixel);
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+.feedback-result.right { color: var(--fact-grn); }
+.feedback-result.wrong { color: var(--myth-red); }
+
+.feedback-answer {
+  font-size: 13px;
+  font-weight: bold;
+  color: #111;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.feedback-explain {
+  font-size: 12px;
+  line-height: 1.55;
+  color: #333;
+  margin-bottom: 18px;
+  text-align: left;
+}
+
+/* =====================
+   BRANDING (background + SCIHRIA logo)
+   New branding background on the title / instruction screens, plus the
+   SCIHRIA logo presented on a light card so it sits well on the dark bg.
+   ===================== */
+#screen-title,
+#screen-options,
+.overlay-panel {
+  background-color: #061021;
+  background-image:
+    linear-gradient(rgba(4, 12, 30, 0.60), rgba(4, 12, 30, 0.80)),
+    url('assets/mobile-bg-1.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  image-rendering: auto; /* photographic bg — keep smooth, not pixelated */
+}
+
+/* Title: the new background already includes the SCIHRIA logo, so use a
+   lighter scrim at the top (keep the logo bright) and anchor to the top. */
+#screen-title {
+  background-image:
+    linear-gradient(to bottom,
+      rgba(4, 12, 30, 0.10),
+      rgba(4, 12, 30, 0.30) 34%,
+      rgba(4, 12, 30, 0.74) 60%,
+      rgba(4, 12, 30, 0.82)),
+    url('assets/mobile-bg-1.jpg');
+  background-position: center top;
+  justify-content: flex-start;
+  /* push title/menu below the logo baked into the bg, but cap it so the
+     menu never runs off the bottom on short phones */
+  padding-top: clamp(64px, 26vh, 230px);
+  overflow-y: auto;
+}
+
+/* About uses its own branded background (smoke-skull, with logo baked in). */
+#overlay-about {
+  background-image:
+    linear-gradient(rgba(2, 8, 20, 0.58), rgba(2, 8, 20, 0.80)),
+    url('assets/background_skull.jpg');
+  background-position: center top;
+}
