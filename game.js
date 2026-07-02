@@ -554,7 +554,7 @@ const SAVE_KEY = 'cta_save_v2'; // v2 fork — separate from stable v1 progress 
 
 // Final completion page: the harm-reduction infographic opened by the
 // "View the infographic" button. (Can be swapped for an external URL later.)
-var INFOGRAPHIC_URL = 'assets/Tobacco_Harm_Reduction_Guide.jpg';
+var INFOGRAPHIC_URL = 'assets/Clearing_the_air_infographic.jpg';
 
 // --------------- I18N (#8 UI scaffold) ---------------
 // UI chrome only. Clinical question content stays English pending committee
